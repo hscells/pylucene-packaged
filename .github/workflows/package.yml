@@ -30,7 +30,7 @@ jobs:
           curl -O https://${{env.MIRROR}}.apache.org/lucene/pylucene/pylucene-${{env.LUCENE_VERSION}}-src.tar.gz
           gunzip pylucene-${{env.LUCENE_VERSION}}-src.tar.gz
           tar -xvf pylucene-${{env.LUCENE_VERSION}}-src.tar
-          mv pylucene-${{env.LUCENE_VERSION}}
+          rm pylucene-${{env.LUCENE_VERSION}}-src.tar
 
           curl -O https://${{env.MIRROR}}.apache.org/ant/binaries/apache-ant-${{env.ANT_VERSION}}-bin.tar.gz
           gunzip apache-ant-${{env.ANT_VERSION}}-bin.tar.gz
@@ -42,7 +42,7 @@ jobs:
       - name: Install JCC
         run: |
           python -m pip install --user --upgrade build wheel
-          cd pylucene
+          cd pylucene-${{env.LUCENE_VERSION}}
           pushd jcc
           python setup.py build
           python setup.py install
@@ -50,7 +50,7 @@ jobs:
 
       - name: Install PyLucene
         run: |
-          cd pylucene
+          cd pylucene-${{env.LUCENE_VERSION}}
           ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --shared --wheel" NUM_FILES=10 make
           mv pylucene/dist/*.whl .
 
