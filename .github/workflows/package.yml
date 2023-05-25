@@ -20,7 +20,7 @@ jobs:
         python-version: [ 3.10.11 ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
@@ -30,20 +30,18 @@ jobs:
           curl -O https://${{env.MIRROR}}.apache.org/lucene/pylucene/pylucene-${{env.LUCENE_VERSION}}-src.tar.gz
           gunzip pylucene-${{env.LUCENE_VERSION}}-src.tar.gz
           tar -xvf pylucene-${{env.LUCENE_VERSION}}-src.tar
-          mv pylucene-${{env.LUCENE_VERSION}} pylucene
-          rm pylucene-${{env.LUCENE_VERSION}}-src.tar
+          mv pylucene-${{env.LUCENE_VERSION}}
 
           curl -O https://${{env.MIRROR}}.apache.org/ant/binaries/apache-ant-${{env.ANT_VERSION}}-bin.tar.gz
           gunzip apache-ant-${{env.ANT_VERSION}}-bin.tar.gz
           tar -xvf apache-ant-${{env.ANT_VERSION}}-bin.tar
           rm apache-ant-${{env.ANT_VERSION}}-bin.tar
-          mv apache-ant-${{env.ANT_VERSION}} ant
-          echo "$(pwd)/ant/bin" >> $GITHUB_PATH
-          
-          python -m pip install --user --upgrade build wheel
+          mv apache-ant-${{env.ANT_VERSION}} ant-${{env.ANT_VERSION}}
+          echo "$(pwd)/ant-${{env.ANT_VERSION}}/bin" >> $GITHUB_PATH
 
       - name: Install JCC
         run: |
+          python -m pip install --user --upgrade build wheel
           cd pylucene
           pushd jcc
           python setup.py build
@@ -54,13 +52,13 @@ jobs:
         run: |
           cd pylucene
           ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --shared --wheel" NUM_FILES=10 make
+          mv pylucene/dist/*.whl .
 
       - name: Upload wheel
         run: |
-          mv pylucene/dist/*.whl .
+          git config --global user.email "harryscells@gmail.com"
+          git config --global user.name "Harry Scells"
           git add -f *.whl
-          git config --local user.email "harryscells@gmail.com"
-          git config --local user.name "Harry Scells"
           git commit -m ":robot: Update ${{matrix.os}} wheel for pylucene ${{env.LUCENE_VERSION}}"
           git push
               
