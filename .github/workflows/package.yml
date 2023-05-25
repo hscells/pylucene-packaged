@@ -43,6 +43,7 @@ jobs:
         name: Configure macos
         run: |
           sed -i '' 's/enabled_shared = False/enabled_shared = True/g' pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py
+          cat setup.py
 
       - name: Install JCC
         run: |
