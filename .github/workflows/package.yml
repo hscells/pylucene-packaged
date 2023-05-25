@@ -49,6 +49,7 @@ jobs:
           python -m pip install --user --upgrade build wheel
           cd pylucene-${{env.LUCENE_VERSION}}
           pushd jcc
+          cat setup.py
           python setup.py build
           python setup.py install
           popd
@@ -57,11 +58,11 @@ jobs:
         run: |
           cd pylucene-${{env.LUCENE_VERSION}}
           ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --shared --wheel" NUM_FILES=10 make
-          cd ~
-          mv pylucene/dist/*.whl .
 
       - name: Upload wheel
         run: |
+          mv pylucene/dist/*.whl .
+          
           git config --global user.email "harryscells@gmail.com"
           git config --global user.name "Harry Scells"
           git add -f *.whl
