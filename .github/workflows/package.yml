@@ -38,6 +38,8 @@ jobs:
           rm apache-ant-${{env.ANT_VERSION}}-bin.tar
           mv apache-ant-${{env.ANT_VERSION}} ant-${{env.ANT_VERSION}}
           echo "$(pwd)/ant-${{env.ANT_VERSION}}/bin" >> $GITHUB_PATH
+          
+          python -m pip install --user --upgrade build wheel
 
       - if: startsWith(matrix.os, 'macos')
         name: Configure JCC (macos)
@@ -46,14 +48,14 @@ jobs:
           echo "JCC_ARGSEP=';'" >> $GITHUB_ENV
           echo "JCC_LFLAGS=-L${JAVA_HOME}lib;-ljava;-L${JAVA_HOME}lib/server;-ljvm;-Wl,-rpath=${JAVA_HOME}lib:${JAVA_HOME}lib/server" >> $GITHUB_ENV
 
-
       - name: Install JCC
         run: |
-          python -m pip install --user --upgrade build wheel
           cd pylucene-${{env.LUCENE_VERSION}}
           pushd jcc
           python setup.py build
+          echo "---------------- BUILD COMPLETE ----------------"
           python setup.py install
+          echo "--------------- INSTALL COMPLETE ---------------"
           popd          
 
       - name: Install PyLucene
