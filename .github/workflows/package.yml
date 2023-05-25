@@ -54,7 +54,7 @@ jobs:
           pushd jcc
           python setup.py build
           echo "---------------- BUILD COMPLETE ----------------"
-          python setup.py install
+          python -m pip install dist/*.egg
           echo "--------------- INSTALL COMPLETE ---------------"
           popd          
 
