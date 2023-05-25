@@ -39,7 +39,7 @@ jobs:
           mv apache-ant-${{env.ANT_VERSION}} ant-${{env.ANT_VERSION}}
           echo "$(pwd)/ant-${{env.ANT_VERSION}}/bin" >> $GITHUB_PATH
 
-      - if: matrix.os == macos-latest
+      - if: matrix.os == 'macos-latest'
         name: Configure macos
         run: |
           sed -i 's/enabled_shared = False/enabled_shared = True/g' pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py
@@ -57,6 +57,7 @@ jobs:
         run: |
           cd pylucene-${{env.LUCENE_VERSION}}
           ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --shared --wheel" NUM_FILES=10 make
+          cd ~
           mv pylucene/dist/*.whl .
 
       - name: Upload wheel
