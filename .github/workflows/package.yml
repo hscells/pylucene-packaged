@@ -10,9 +10,10 @@ env:
   ANT_VERSION: 1.10.12
 
 jobs:
-  build_wheel_linux:
 
+  setup:
     runs-on: ${{ matrix.os }}
+    depends-on: download_dependencies
     strategy:
       matrix:
         os: [ ubuntu-latest ]
@@ -38,26 +39,41 @@ jobs:
           rm apache-ant-${{env.ANT_VERSION}}-bin.tar
           mv apache-ant-${{env.ANT_VERSION}} ant
           echo "$(pwd)/ant/bin" >> $GITHUB_PATH
+          
+          python -m pip install --user --upgrade build wheel
 
-      - name: Install JCC
-        run: |
-          cd pylucene
-          pushd jcc
-          python setup.py build
-          python setup.py install
-          popd
+  build_wheel_linux:
+    needs: setup
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        python-version: [ 3.10.11 ]
 
-      - name: Install PyLucene
-        run: |
-          cd pylucene
-          ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --shared --wheel" NUM_FILES=10 make
+      steps:
+        - name: Install JCC
+          run: |
+            cd pylucene
+            pushd jcc
+            python setup.py build
+            python setup.py install
+            popd
 
+        - name: Install PyLucene
+          run: |
+            cd pylucene
+            ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --shared --wheel" NUM_FILES=10 make
+
+  upload_wheels:
+    needs: [ build_wheel_linux ]
+    runs-on: ubuntu-latest
+    steps:
       - name: Upload wheel
         run: |
           mv pylucene/dist/*.whl .
           git add -f *.whl
           git config --local user.email "harryscells@gmail.com"
           git config --local user.name "Harry Scells"
-          git commit -m "Add wheel"
+          git commit -m ":robot: Add wheels for pylucene ${{env.LUCENE_VERSION}} at $(date -u)"
           git push
               
