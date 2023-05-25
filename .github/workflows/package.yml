@@ -56,7 +56,7 @@ jobs:
           pushd jcc
           python setup.py build
           echo "---------------- BUILD COMPLETE ----------------"
-          python setup.py --debug install
+          python setup.py install --help
           echo "--------------- INSTALL COMPLETE ---------------"
           popd          
 
