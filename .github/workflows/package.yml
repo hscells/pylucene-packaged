@@ -32,7 +32,7 @@ jobs:
           mv pylucene-${{env.LUCENE_VERSION}} pylucene
           rm pylucene-${{env.LUCENE_VERSION}}-src.tar
 
-          curl -O https://${{mirror}}.apache.org/ant/binaries/apache-ant-${{env.ANT_VERSION}}-bin.tar.gz
+          curl -O https://${{env.MIRROR}}.apache.org/ant/binaries/apache-ant-${{env.ANT_VERSION}}-bin.tar.gz
           gunzip apache-ant-${{env.ANT_VERSION}}-bin.tar.gz
           tar -xvf apache-ant-${{env.ANT_VERSION}}-bin.tar
           rm apache-ant-${{env.ANT_VERSION}}-bin.tar
