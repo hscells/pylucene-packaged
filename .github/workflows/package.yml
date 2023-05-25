@@ -42,7 +42,7 @@ jobs:
       - if: matrix.os == 'macos-latest'
         name: Configure macos
         run: |
-          sed -i 's/enabled_shared = False/enabled_shared = True/g' pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py
+          sed -i '' 's/enabled_shared = False/enabled_shared = True/g' pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py
 
       - name: Install JCC
         run: |
