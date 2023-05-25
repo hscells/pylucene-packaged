@@ -26,17 +26,17 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Download dependencies
         run: |
-          curl -O https://${mirror}.apache.org/lucene/pylucene/pylucene-${lucene_version}-src.tar.gz
-          gunzip pylucene-${lucene_version}-src.tar.gz
-          tar -xvf pylucene-${lucene_version}-src.tar
-          mv pylucene-${lucene_version} pylucene
-          rm pylucene-${lucene_version}-src.tar
+          curl -O https://${{env.MIRROR}}.apache.org/lucene/pylucene/pylucene-${{env.LUCENE_VERSION}}-src.tar.gz
+          gunzip pylucene-${{env.LUCENE_VERSION}}-src.tar.gz
+          tar -xvf pylucene-${{env.LUCENE_VERSION}}-src.tar
+          mv pylucene-${{env.LUCENE_VERSION}} pylucene
+          rm pylucene-${{env.LUCENE_VERSION}}-src.tar
 
-          curl -O https://${mirror}.apache.org/ant/binaries/apache-ant-${ant_version}-bin.tar.gz
-          gunzip apache-ant-${ant_version}-bin.tar.gz
-          tar -xvf apache-ant-${ant_version}-bin.tar
-          rm apache-ant-${ant_version}-bin.tar
-          mv apache-ant-${ant_version} ant
+          curl -O https://${{mirror}}.apache.org/ant/binaries/apache-ant-${{env.ANT_VERSION}}-bin.tar.gz
+          gunzip apache-ant-${{env.ANT_VERSION}}-bin.tar.gz
+          tar -xvf apache-ant-${{env.ANT_VERSION}}-bin.tar
+          rm apache-ant-${{env.ANT_VERSION}}-bin.tar
+          mv apache-ant-${{env.ANT_VERSION}} ant
           echo "$(pwd)/ant/bin" >> $GITHUB_PATH
 
       - name: Install JCC
