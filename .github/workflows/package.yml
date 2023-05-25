@@ -43,7 +43,7 @@ jobs:
         name: Install JCC (macos)
         run: |
           cat pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py
-          cat pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py | sed 's/enabled_shared = False/enabled_shared = True/g' > tmp
+          cat pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py | sed 's/enable_shared = False/enable_shared = True/g' > tmp
           cat tmp
           mv tmp pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py
           cat pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py
