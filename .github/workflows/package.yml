@@ -1,0 +1,66 @@
+on:
+  push:
+    branches:
+      - master
+      - main
+
+env:
+  MIRROR: downloads
+  LUCENE_VERSION: 9.4.1
+  ANT_VERSION: 1.10.12
+
+jobs:
+  build_wheel:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+        python-version: [ 3.10 ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Download dependencies
+        run: |
+          curl -O https://${mirror}.apache.org/lucene/pylucene/pylucene-${lucene_version}-src.tar.gz
+          gunzip pylucene-${lucene_version}-src.tar.gz
+          tar -xvf pylucene-${lucene_version}-src.tar
+          mv pylucene-${lucene_version} pylucene
+          rm pylucene-${lucene_version}-src.tar
+
+          curl -O https://${mirror}.apache.org/ant/binaries/apache-ant-${ant_version}-bin.tar.gz
+          gunzip apache-ant-${ant_version}-bin.tar.gz
+          tar -xvf apache-ant-${ant_version}-bin.tar
+          rm apache-ant-${ant_version}-bin.tar
+          mv apache-ant-${ant_version} ant
+          echo "$(pwd)/ant/bin" >> $GITHUB_PATH
+
+      - name: Install JCC
+        run: |
+          cd pylucene
+          pushd jcc
+          python setup.py build
+          python setup.py install
+          popd
+
+      - name: Install PyLucene
+        run: |
+          ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --shared --wheel" NUM_FILES=10 make
+
+      - name: Upload wheel
+        uses: actions/upload-artifact@v2
+        with:
+          name: pylucene
+          path: pylucene/dist/*.whl
+        run: |
+          mv pylucene/dist/*.whl .
+          git add -f *.whl
+          git config --local user.email "harryscells@gmail.com"
+          git config --local user.name "Harry Scells"
+          git commit -m "Add wheel"
+          git push
+              
