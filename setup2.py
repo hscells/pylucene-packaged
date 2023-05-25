@@ -247,14 +247,14 @@ try:
         except ImportError:
             with_modern_setuptools = False
 
-    enable_shared = True
+    enable_shared = False
 
     if with_modern_setuptools and 'NO_SHARED' not in os.environ:
         if platform in ('ipod', 'win32'):
-            enable_shared = True
+            enable_shared = False
 
         elif platform == 'darwin':
-            enable_shared = True
+            enable_shared = False
 
         elif platform == 'linux':
             if using_python2:
@@ -264,7 +264,7 @@ try:
             enable_shared = patch_setuptools(with_setuptools)
 
         elif platform == 'mingw32':
-            enable_shared = True
+            enable_shared = False
             # need to monkeypatch the CygwinCCompiler class to generate
             # jcc.lib in the correct place
             if using_python2:

@@ -42,7 +42,9 @@ jobs:
       - if: startsWith(matrix.os, 'macos')
         name: Install JCC (macos)
         run: |
-          sed -i '' 's/enabled_shared = False/enabled_shared = True/g' pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py
+          cat pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py | sed 's/enabled_shared = False/enabled_shared = True/g' > tmp
+          mv tmp pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py
+          rm tmp
           cat pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py
           
           python -m pip install --user --upgrade build wheel
