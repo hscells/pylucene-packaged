@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ ubuntu-latest ]
+        os: [ macos-latest ]
         python-version: [ 3.10.11 ]
 
     steps:
@@ -38,6 +38,11 @@ jobs:
           rm apache-ant-${{env.ANT_VERSION}}-bin.tar
           mv apache-ant-${{env.ANT_VERSION}} ant-${{env.ANT_VERSION}}
           echo "$(pwd)/ant-${{env.ANT_VERSION}}/bin" >> $GITHUB_PATH
+
+      - if: matrix.os == macos-latest
+        name: Configure macos
+        run: |
+          sed -i 's/enabled_shared = False/enabled_shared = True/g' pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py
 
       - name: Install JCC
         run: |
