@@ -52,10 +52,6 @@ jobs:
           ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --shared --wheel" NUM_FILES=10 make
 
       - name: Upload wheel
-        uses: actions/upload-artifact@v2
-        with:
-          name: pylucene
-          path: pylucene/dist/*.whl
         run: |
           mv pylucene/dist/*.whl .
           git add -f *.whl
