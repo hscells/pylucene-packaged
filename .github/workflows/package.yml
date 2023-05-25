@@ -40,24 +40,14 @@ jobs:
           echo "$(pwd)/ant-${{env.ANT_VERSION}}/bin" >> $GITHUB_PATH
 
       - if: startsWith(matrix.os, 'macos')
-        name: Install JCC (macos)
+        name: Configure JCC (macos)
         run: |
-          cat pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py
           cat pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py | sed 's/enable_shared = False/enable_shared = True/g' > tmp
-          cat tmp
           mv tmp pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py
-          cat pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py
-          
-          python -m pip install --user --upgrade build wheel
-          cd pylucene-${{env.LUCENE_VERSION}}
-          pushd jcc
-          cat setup.py
-          python setup.py build
-          python setup.py install
-          popd
+          echo "JCC_INCLUDES=/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/8.0.372-7/x64/Contents/Home/include:/opt/homebrew/Cellar/openjdk/19.0.1/libexec/openjdk.jdk/Contents/Home/include/darwin:/Library/Frameworks/Python.framework/Versions/3.10/include/python" >> $GITHUB_ENV
 
-      - if: startsWith(matrix.os, 'ubuntu')
-        name: Install JCC (ubuntu)
+
+      - name: Install JCC
         run: |
           python -m pip install --user --upgrade build wheel
           cd pylucene-${{env.LUCENE_VERSION}}
