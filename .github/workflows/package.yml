@@ -44,7 +44,9 @@ jobs:
         run: |
           cat pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py | sed 's/enable_shared = False/enable_shared = True/g' > tmp
           mv tmp pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py
-          echo "JCC_INCLUDES=/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/8.0.372-7/x64/Contents/Home/include:/opt/homebrew/Cellar/openjdk/19.0.1/libexec/openjdk.jdk/Contents/Home/include/darwin:/Library/Frameworks/Python.framework/Versions/3.10/include/python" >> $GITHUB_ENV
+          echo "JCC_JDK=${JAVA_HOME}" >> $GITHUB_ENV
+          echo 'JCC_ARGSEP=";"' >> $GITHUB_ENV
+          echo 'JCC_LFLAGS="-L$JAVA_HOME/lib;-ljava;-L$JAVA_HOME/lib/server;-ljvm;-Wl,-rpath=$JAVA_HOME/lib:$JAVA_HOME/lib/server"' >> $GITHUB_ENV
 
 
       - name: Install JCC
