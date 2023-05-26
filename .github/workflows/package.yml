@@ -64,6 +64,7 @@ jobs:
       - name: Install PyLucene
         run: |
           cd pylucene-${{env.LUCENE_VERSION}}
+          ./gradlew localSettings
           ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --shared --wheel" NUM_FILES=10 make
 
       - name: Upload wheel
