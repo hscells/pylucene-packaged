@@ -28,7 +28,6 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          cache: 'gradle'
       - name: Download dependencies
         run: |
           curl -O https://${{env.MIRROR}}.apache.org/lucene/pylucene/pylucene-${{env.LUCENE_VERSION}}-src.tar.gz
