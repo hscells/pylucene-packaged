@@ -53,6 +53,12 @@ jobs:
           echo "JCC_ARGSEP=';'" >> $GITHUB_ENV
           echo "JCC_LFLAGS=-L${JAVA_HOME}lib;-ljava;-L${JAVA_HOME}lib/server;-ljvm;-Wl,-rpath=${JAVA_HOME}lib:${JAVA_HOME}lib/server" >> $GITHUB_ENV
 
+      - name: Initialize gradle settings
+        run: |
+          ls -alh ./pylucene-${{env.LUCENE_VERSION}}
+          cd ./pylucene-${{env.LUCENE_VERSION}}/lucene
+          ./gradlew localSettings
+
       - name: Install JCC
         run: |
           cd ./pylucene-${{env.LUCENE_VERSION}}/jcc
@@ -60,11 +66,6 @@ jobs:
           echo "---------------- BUILD COMPLETE ----------------"
           pip install .
           echo "--------------- INSTALL COMPLETE ---------------"
-
-      - name: Initialize gradle settings
-        run: |
-          cd ./pylucene-${{env.LUCENE_VERSION}}/lucene
-          ./gradlew localSettings
 
       - name: Install PyLucene
         run: |
