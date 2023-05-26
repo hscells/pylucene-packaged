@@ -26,8 +26,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - uses: actions/setup-java@v2
         with:
-          java-version: '11'
-          distribution: 'adopt'
+          java-version: '17'
+          distribution: 'oracle'
       - name: Download dependencies
         run: |
           curl -O https://${{env.MIRROR}}.apache.org/lucene/pylucene/pylucene-${{env.LUCENE_VERSION}}-src.tar.gz
