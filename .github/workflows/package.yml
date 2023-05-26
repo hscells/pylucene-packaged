@@ -39,7 +39,7 @@ jobs:
           mv apache-ant-${{env.ANT_VERSION}} ant-${{env.ANT_VERSION}}
           echo "$(pwd)/ant-${{env.ANT_VERSION}}/bin" >> $GITHUB_PATH
           
-          python -m pip install --user --upgrade build wheel
+          python -m pip install --user --upgrade build wheel setuptools
 
       - if: startsWith(matrix.os, 'macos')
         name: Configure JCC (macos)
@@ -55,8 +55,6 @@ jobs:
           cd pylucene-${{env.LUCENE_VERSION}}/jcc
           python setup.py build
           echo "---------------- BUILD COMPLETE ----------------"
-          echo $(python setup.py --help)
-          echo $(python setup.py --help-commands)
           python setup.py install
           echo "--------------- INSTALL COMPLETE ---------------"
 
