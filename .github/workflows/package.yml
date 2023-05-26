@@ -44,14 +44,6 @@ jobs:
           
           python -m pip install --user --upgrade pip build wheel setuptools
 
-      - if: startsWith(matrix.os, 'macos')
-        name: Configure JCC (macos)
-        run: |
-          cat pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py | sed 's/enable_shared = False/enable_shared = True/g' > tmp
-          mv tmp pylucene-${{env.LUCENE_VERSION}}/jcc/setup.py
-          echo "JCC_JDK=${JAVA_HOME}" >> $GITHUB_ENV
-          echo "JCC_ARGSEP=';'" >> $GITHUB_ENV
-          echo "JCC_LFLAGS=-L${JAVA_HOME}lib;-ljava;-L${JAVA_HOME}lib/server;-ljvm;-Wl,-rpath=${JAVA_HOME}lib:${JAVA_HOME}lib/server" >> $GITHUB_ENV
 
       - name: Install JCC
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}/jcc
