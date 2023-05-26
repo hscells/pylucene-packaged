@@ -63,7 +63,9 @@ jobs:
 
       - name: Initialize gradle settings
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}/lucene
-        run: ./gradlew localSettings
+        run: |
+          ls -alh
+          ./gradlew localSettings
 
       - name: Install PyLucene
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}
