@@ -27,7 +27,7 @@ jobs:
       - uses: actions/setup-java@v2
         with:
           java-version: '17'
-          distribution: 'oracle'
+          distribution: 'adopt-openj9'
       - name: Download dependencies
         run: |
           curl -O https://${{env.MIRROR}}.apache.org/lucene/pylucene/pylucene-${{env.LUCENE_VERSION}}-src.tar.gz
