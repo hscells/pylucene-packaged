@@ -39,7 +39,7 @@ jobs:
           mv apache-ant-${{env.ANT_VERSION}} ant-${{env.ANT_VERSION}}
           echo "$(pwd)/ant-${{env.ANT_VERSION}}/bin" >> $GITHUB_PATH
           
-          python -m pip install --user --upgrade build wheel setuptools
+          python -m pip install --user --upgrade pip build wheel setuptools
 
       - if: startsWith(matrix.os, 'macos')
         name: Configure JCC (macos)
@@ -60,7 +60,9 @@ jobs:
 
       - name: Install PyLucene
         run: |
+          ls -alh
           cd pylucene-${{env.LUCENE_VERSION}}
+          ls -alh
           ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --shared --wheel" NUM_FILES=10 make
 
       - name: Upload wheel
