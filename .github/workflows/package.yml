@@ -55,7 +55,7 @@ jobs:
           cd pylucene-${{env.LUCENE_VERSION}}/jcc
           python setup.py build
           echo "---------------- BUILD COMPLETE ----------------"
-          python setup.py install
+          pip install .
           echo "--------------- INSTALL COMPLETE ---------------"
 
       - name: Install PyLucene
