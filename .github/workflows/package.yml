@@ -53,23 +53,21 @@ jobs:
           echo "JCC_ARGSEP=';'" >> $GITHUB_ENV
           echo "JCC_LFLAGS=-L${JAVA_HOME}lib;-ljava;-L${JAVA_HOME}lib/server;-ljvm;-Wl,-rpath=${JAVA_HOME}lib:${JAVA_HOME}lib/server" >> $GITHUB_ENV
 
-      - name: Initialize gradle settings
-        run: |
-          ls -alh ./pylucene-${{env.LUCENE_VERSION}}
-          cd ./pylucene-${{env.LUCENE_VERSION}}/lucene
-          ./gradlew localSettings
-
       - name: Install JCC
+        working-directory: ./pylucene-${{env.LUCENE_VERSION}}/jcc
         run: |
-          cd ./pylucene-${{env.LUCENE_VERSION}}/jcc
           python setup.py build
           echo "---------------- BUILD COMPLETE ----------------"
           pip install .
           echo "--------------- INSTALL COMPLETE ---------------"
 
+      - name: Initialize gradle settings
+        working-directory: ./pylucene-${{env.LUCENE_VERSION}}/lucene-java-${{env.LUCENE_VERSION}}
+        run: ./gradlew localSettings
+
       - name: Install PyLucene
+        working-directory: ./pylucene-${{env.LUCENE_VERSION}}
         run: |
-          cd ./pylucene-${{env.LUCENE_VERSION}}
           ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --shared --wheel" NUM_FILES=10 make
 
       - name: Upload wheel
