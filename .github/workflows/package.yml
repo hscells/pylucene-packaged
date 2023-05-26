@@ -68,7 +68,7 @@ jobs:
           
           git config --global user.email "harryscells@gmail.com"
           git config --global user.name "Harry Scells"
-          git add -f *.whl
+          git add -f dist/*.whl
           git commit -m ":robot: Update ${{matrix.os}} wheel for pylucene ${{env.LUCENE_VERSION}}"
           git push
               
