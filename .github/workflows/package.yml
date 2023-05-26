@@ -21,20 +21,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+      - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+      - uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: 'gradle'
       - name: Download dependencies
         run: |
           curl -O https://${{env.MIRROR}}.apache.org/lucene/pylucene/pylucene-${{env.LUCENE_VERSION}}-src.tar.gz
           gunzip pylucene-${{env.LUCENE_VERSION}}-src.tar.gz
-          tar -xvf pylucene-${{env.LUCENE_VERSION}}-src.tar
+          tar -xf pylucene-${{env.LUCENE_VERSION}}-src.tar
           rm pylucene-${{env.LUCENE_VERSION}}-src.tar
 
           curl -O https://${{env.MIRROR}}.apache.org/ant/binaries/apache-ant-${{env.ANT_VERSION}}-bin.tar.gz
           gunzip apache-ant-${{env.ANT_VERSION}}-bin.tar.gz
-          tar -xvf apache-ant-${{env.ANT_VERSION}}-bin.tar
+          tar -xf apache-ant-${{env.ANT_VERSION}}-bin.tar
           rm apache-ant-${{env.ANT_VERSION}}-bin.tar
           mv apache-ant-${{env.ANT_VERSION}} ant-${{env.ANT_VERSION}}
           echo "$(pwd)/ant-${{env.ANT_VERSION}}/bin" >> $GITHUB_PATH
@@ -63,6 +67,7 @@ jobs:
           ls -alh
           cd pylucene-${{env.LUCENE_VERSION}}
           ls -alh
+          ls -alh lucene-java-9.4.1/lucene/core/build/runtimeJars/
           ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --shared --wheel" NUM_FILES=10 make
 
       - name: Upload wheel
