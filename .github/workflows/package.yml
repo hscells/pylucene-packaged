@@ -63,10 +63,7 @@ jobs:
 
       - name: Install PyLucene
         run: |
-          ls -alh
           cd pylucene-${{env.LUCENE_VERSION}}
-          ls -alh
-          ls -alh lucene-java-9.4.1/lucene/core/build/runtimeJars/
           ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --shared --wheel" NUM_FILES=10 make
 
       - name: Upload wheel
