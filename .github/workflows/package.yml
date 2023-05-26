@@ -52,13 +52,13 @@ jobs:
 
       - name: Install JCC
         run: |
-          cd pylucene-${{env.LUCENE_VERSION}}
-          pushd jcc
+          cd pylucene-${{env.LUCENE_VERSION}}/jcc
           python setup.py build
           echo "---------------- BUILD COMPLETE ----------------"
-          python setup.py install --help
+          echo $(python setup.py --help)
+          echo $(python setup.py --help-commands)
+          python setup.py install
           echo "--------------- INSTALL COMPLETE ---------------"
-          popd          
 
       - name: Install PyLucene
         run: |
