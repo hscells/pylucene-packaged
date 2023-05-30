@@ -1,0 +1,9 @@
+LICENSE
+NOTICE
+README.md
+setup.py
+pylucene_packaged.egg-info/PKG-INFO
+pylucene_packaged.egg-info/SOURCES.txt
+pylucene_packaged.egg-info/dependency_links.txt
+pylucene_packaged.egg-info/requires.txt
+pylucene_packaged.egg-info/top_level.txt

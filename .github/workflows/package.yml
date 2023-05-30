@@ -53,7 +53,7 @@ jobs:
           echo "--------------- INSTALL COMPLETE ---------------"
 
       - name: Initialize gradle settings
-        working-directory: ./pylucene-${{env.LUCENE_VERSION}}/lucene-java-${{env.LUCENE_VERSION}}
+        working-directory: ./pylucene-${{env.LUCENE_VERSION}}/wheels-java-${{env.LUCENE_VERSION}}
         run: ./gradlew localSettings
 
       - name: Install PyLucene
