@@ -70,5 +70,5 @@ jobs:
           git config --global user.name "Harry Scells"
           git add -f dist/*.whl
           git commit -m ":robot: Update ${{matrix.os}} wheel for pylucene ${{env.LUCENE_VERSION}}"
-          git pull
+          git pull --rebase
           git push
