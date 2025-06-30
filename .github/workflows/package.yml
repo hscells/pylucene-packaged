@@ -8,7 +8,7 @@ on:
 env:
   MIRROR: downloads
   LUCENE_VERSION: 9.4.1
-  ANT_VERSION: 1.10.12
+  ANT_VERSION: 1.10.14
 
 jobs:
 
