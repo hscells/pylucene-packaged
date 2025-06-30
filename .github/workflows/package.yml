@@ -12,6 +12,18 @@ env:
 
 jobs:
 
+  setup_xcode:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ macos-12, macos-15 ]
+
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+
   build_wheel:
     runs-on: ${{ matrix.os }}
 
