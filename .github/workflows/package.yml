@@ -30,7 +30,7 @@ jobs:
       - uses: actions/setup-java@v2
         with:
           java-version: '17'
-          distribution: 'temurin'
+          distribution: 'zulu'
       - name: Download dependencies
         run: |
           curl -O https://${{env.MIRROR}}.apache.org/lucene/pylucene/pylucene-${{env.LUCENE_VERSION}}-src.tar.gz
@@ -51,7 +51,7 @@ jobs:
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}/jcc
         run: |
           python setup.py build
-          pip install .
+          python setup.py install
 
       - name: Initialize gradle settings
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}/lucene-java-${{env.LUCENE_VERSION}}
@@ -60,7 +60,7 @@ jobs:
       - name: Install PyLucene
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}
         run: |
-          ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --shared --wheel" NUM_FILES=10 make
+          ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --wheel" NUM_FILES=10 make
 
       - name: Upload wheel
         run: |
