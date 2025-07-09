@@ -7,7 +7,7 @@ on:
 
 env:
   MIRROR: downloads
-  LUCENE_VERSION: 9.4.1
+  LUCENE_VERSION: 9.12.0
   ANT_VERSION: 1.10.14
 
 jobs:
@@ -16,7 +16,8 @@ jobs:
 
     strategy:
       matrix:
-        os: [ macos-14, macos-15, ubuntu-latest ]
+        #os: [ macos-14, macos-15, ubuntu-latest ]
+        os: [ macos-15 ]
         python-version: [ 3.10.11 ]
   
     runs-on: ${{ matrix.os }}
@@ -50,9 +51,7 @@ jobs:
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}/jcc
         run: |
           python setup.py build
-          echo "---------------- BUILD COMPLETE ----------------"
           pip install .
-          echo "--------------- INSTALL COMPLETE ---------------"
 
       - name: Initialize gradle settings
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}/lucene-java-${{env.LUCENE_VERSION}}
@@ -61,7 +60,7 @@ jobs:
       - name: Install PyLucene
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}
         run: |
-          ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --wheel" NUM_FILES=10 make
+          ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --shared --wheel" NUM_FILES=10 make
 
       - name: Upload wheel
         run: |
