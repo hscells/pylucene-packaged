@@ -12,16 +12,14 @@ env:
 
 jobs:
 
-  setup_xcode:
-    runs-on: ${{ matrix.os }}
-
   build_wheel:
-    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
         os: [ macos-14, macos-15, ubuntu-latest ]
         python-version: [ 3.10.11 ]
+  
+    runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v3
