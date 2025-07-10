@@ -51,7 +51,9 @@ jobs:
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}/jcc
         run: |
           echo $(/usr/libexec/java_home -V)
-          export JCC_INCLUDES=/opt/homebrew/Cellar/openjdk@17/17.0.15/libexec/openjdk.jdk/Contents/Home/include:/opt/homebrew/Cellar/openjdk@17/17.0.15/libexec/openjdk.jdk/Contents/Home/include/darwin
+          export JAVAHOME=/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.15-6/arm64/Contents/Home
+          export JAVA_HOME=/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.15-6/arm64/Contents/Home
+          export JCC_INCLUDES=/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.15-6/arm64/Contents/Home/include:/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.15-6/arm64/Contents/Home/include/darwin
           python setup.py build
           python setup.py install
 
