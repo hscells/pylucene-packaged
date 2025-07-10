@@ -30,7 +30,7 @@ jobs:
           sudo rm -rf /usr/lib/jvm/
       - uses: actions/setup-java@v4
         with:
-          java-version: '8'
+          java-version: '9'
           distribution: 'temurin'
       - name: Validate java config
         run: |
