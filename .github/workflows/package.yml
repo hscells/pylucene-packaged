@@ -39,7 +39,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install JCC (ubuntu)
-        if: matrix.os == 'ubuntu-latest'
         env:
           JCC_JDK: ${{ env.JAVA_HOME }}
           JCC_ARGSEP: ";"
@@ -57,11 +56,9 @@ jobs:
     strategy:
       matrix:
         os: [ macos-15 ]
-  
     runs-on: ${{ matrix.os }}    
     steps:
-      - name: Install JCC (ubuntu)
-        if: matrix.os == 'ubuntu-latest'
+      - name: Install JCC
         env:
           JCC_JDK: ${{ env.JAVA_HOME }}
         run: |
