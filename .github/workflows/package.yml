@@ -29,13 +29,14 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - uses: actions/setup-java@v4
         with:
-          java-version: '16'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Validate java config
         run: |
           java --version
           echo $JAVA_HOME    
+          rm -rf /usr/lib/jvm/
           update-alternatives --display java
           
       - name: Download dependencies
