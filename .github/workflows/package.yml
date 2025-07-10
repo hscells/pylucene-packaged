@@ -62,35 +62,24 @@ jobs:
       - name: Initialize gradle settings
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}/lucene-java-${{env.LUCENE_VERSION}}
         env:
-          JAVA17_HOME: $JAVA_HOME 
+          JAVA17_HOME: ${{ env.JAVA_HOME }}
           JAVA19_HOME: ""
           JAVA20_HOME: ""
           JAVA21_HOME: ""
           JAVA22_HOME: ""
-          RUNTIME_JAVA_HOME: $JAVA_HOME 
-        run: |
-          export JAVA17_HOME=$JAVA_HOME 
-          export JAVA19_HOME= 
-          export JAVA20_HOME= 
-          export JAVA21_HOME= 
-          export JAVA22_HOME= 
-          export RUNTIME_JAVA_HOME=$JAVA_HOME 
-          ./gradlew localSettings
+          RUNTIME_JAVA_HOME: ${{ env.JAVA_HOME }}
+        run: ./gradlew localSettings
 
       - name: Install PyLucene
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}
-        run: |
-          JAVA17_HOME=$JAVA_HOME \
-          JAVA19_HOME= \
-          JAVA20_HOME= \
-          JAVA21_HOME= \
-          JAVA22_HOME= \
-          RUNTIME_JAVA_HOME=$JAVA_HOME \
-          ANT=$(which ant) \
-          PYTHON=$(which python) \
-          JCC="python -m jcc --wheel" \
-          NUM_FILES=10 \
-          make
+        env:
+          JAVA17_HOME: ${{ env.JAVA_HOME }}
+          JAVA19_HOME: ""
+          JAVA20_HOME: ""
+          JAVA21_HOME: ""
+          JAVA22_HOME: ""
+          RUNTIME_JAVA_HOME: ${{ env.JAVA_HOME }}        
+        run: RUNTIME_JAVA_HOME=$JAVA_HOME ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --wheel" NUM_FILES=10 make
 
       - name: Upload wheel
         run: |
