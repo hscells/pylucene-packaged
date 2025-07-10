@@ -30,7 +30,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           java-version: '17.0.15'
-          distribution: 'temurin'
+          distribution: 'oracle'
 
       - name: Validate java config
         run: |
