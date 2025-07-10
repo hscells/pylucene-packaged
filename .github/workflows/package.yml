@@ -30,7 +30,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'jetbrains'
+          distribution: 'oracle'
 
       - name: Validate java config
         run: |
@@ -67,7 +67,17 @@ jobs:
       - name: Install PyLucene
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}
         run: |
-          ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --wheel" NUM_FILES=10 make
+          JAVA17_HOME=$ENV:JAVA_HOME \
+          JAVA19_HOME= \
+          JAVA20_HOME= \
+          JAVA21_HOME= \
+          JAVA22_HOME= \
+          RUNTIME_JAVA_HOME=$ENV:JAVA_HOME \
+          ANT=$(which ant) \
+          PYTHON=$(which python) \
+          JCC="python -m jcc --wheel" \
+          NUM_FILES=10 \
+          make
 
       - name: Upload wheel
         run: |
