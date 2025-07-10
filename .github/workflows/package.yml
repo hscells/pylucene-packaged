@@ -62,7 +62,14 @@ jobs:
 
       - name: Initialize gradle settings
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}/lucene-java-${{env.LUCENE_VERSION}}
-        run: ./gradlew localSettings
+        run: |
+          JAVA17_HOME=$JAVA_HOME \
+          JAVA19_HOME= \
+          JAVA20_HOME= \
+          JAVA21_HOME= \
+          JAVA22_HOME= \
+          RUNTIME_JAVA_HOME=$JAVA_HOME \        
+          ./gradlew localSettings
 
       - name: Install PyLucene
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}
