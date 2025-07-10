@@ -36,7 +36,7 @@ jobs:
         run: |
           java --version
           echo $JAVA_HOME    
-          rm -rf /usr/lib/jvm/
+          sudo rm -rf /usr/lib/jvm/
           update-alternatives --display java
           
       - name: Download dependencies
