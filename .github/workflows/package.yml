@@ -60,6 +60,8 @@ jobs:
 
       - name: Install JCC
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}/jcc
+        env:
+          JCC_JDK: ${{ env.JAVA_HOME }}
         run: |
           python setup.py build
           python setup.py install
