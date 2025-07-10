@@ -4,7 +4,7 @@ import sys
 from setuptools import setup, find_namespace_packages
 
 package_name = 'lucene'
-version = '9.4.1'
+version = '9.12.0'
 python_tags = [f'cp{sys.version_info.major}{sys.version_info.minor}' for _ in range(2)]
 platform_name = platform.system().lower()
 platform_version = platform.release()
@@ -19,7 +19,7 @@ wheel_file_name = f'{package_name}-{version}-{"-".join(python_tags)}-{platform_n
 
 setup(
     name='pylucene-packaged',
-    version='2023.05.30.0',
+    version='2025.07.10.0',
     license='Apache License 2.0',
     url='https://github.com/hscells/pylucene-packaged',
     packages=find_namespace_packages(),
