@@ -103,7 +103,7 @@ jobs:
         run: |
           pip install build setuptools
           cd jcc \
-            && NO_SHARED=1 JCC_JDK=/usr/lib/jvm/temurin python -m build -nw \
+            && NO_SHARED=1 JCC_JDK=$JAVA_HOME python -m build -nw \
             && pip install dist/*.whl
           make all install JCC='python -m jcc' PYTHON=python NUM_FILES=16 MODERN_PACKAGING=true
 
