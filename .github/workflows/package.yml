@@ -56,19 +56,18 @@ jobs:
       - name: Install JCC
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}/jcc
         run: |
-          echo $(/usr/libexec/java_home)
           python setup.py build
           python setup.py install
 
       - name: Initialize gradle settings
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}/lucene-java-${{env.LUCENE_VERSION}}
         run: |
-          JAVA17_HOME=$JAVA_HOME \
-          JAVA19_HOME= \
-          JAVA20_HOME= \
-          JAVA21_HOME= \
-          JAVA22_HOME= \
-          RUNTIME_JAVA_HOME=$JAVA_HOME \        
+          export JAVA17_HOME=$JAVA_HOME 
+          export JAVA19_HOME= 
+          export JAVA20_HOME= 
+          export JAVA21_HOME= 
+          export JAVA22_HOME= 
+          export RUNTIME_JAVA_HOME=$JAVA_HOME 
           ./gradlew localSettings
 
       - name: Install PyLucene
