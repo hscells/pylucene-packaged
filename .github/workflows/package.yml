@@ -25,48 +25,48 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Remove java
-        run: |
-          sudo rm -rf /usr/lib/jvm/
+      # - name: Remove java
+      #   run: |
+      #     sudo rm -rf /usr/lib/jvm/
       - uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
-      - name: Validate java config
-        run: |
-          java --version
-          echo $JAVA_HOME    
-          update-alternatives --display java
+      # - name: Validate java config
+      #   run: |
+      #     java --version
+      #     echo $JAVA_HOME    
+      #     update-alternatives --display java
 
-      - uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
+      # - uses: actions/setup-python@v2
+      #   with:
+      #     python-version: ${{ matrix.python-version }}
           
-      - name: Download dependencies
-        run: |
-          curl -O https://${{env.MIRROR}}.apache.org/lucene/pylucene/pylucene-${{env.LUCENE_VERSION}}-src.tar.gz
-          gunzip pylucene-${{env.LUCENE_VERSION}}-src.tar.gz
-          tar -xf pylucene-${{env.LUCENE_VERSION}}-src.tar
-          rm pylucene-${{env.LUCENE_VERSION}}-src.tar
+      # - name: Download dependencies
+      #   run: |
+      #     curl -O https://${{env.MIRROR}}.apache.org/lucene/pylucene/pylucene-${{env.LUCENE_VERSION}}-src.tar.gz
+      #     gunzip pylucene-${{env.LUCENE_VERSION}}-src.tar.gz
+      #     tar -xf pylucene-${{env.LUCENE_VERSION}}-src.tar
+      #     rm pylucene-${{env.LUCENE_VERSION}}-src.tar
 
-          curl -O https://${{env.MIRROR}}.apache.org/ant/binaries/apache-ant-${{env.ANT_VERSION}}-bin.tar.gz
-          gunzip apache-ant-${{env.ANT_VERSION}}-bin.tar.gz
-          tar -xf apache-ant-${{env.ANT_VERSION}}-bin.tar
-          rm apache-ant-${{env.ANT_VERSION}}-bin.tar
-          mv apache-ant-${{env.ANT_VERSION}} ant-${{env.ANT_VERSION}}
-          echo "$(pwd)/ant-${{env.ANT_VERSION}}/bin" >> $GITHUB_PATH
+      #     curl -O https://${{env.MIRROR}}.apache.org/ant/binaries/apache-ant-${{env.ANT_VERSION}}-bin.tar.gz
+      #     gunzip apache-ant-${{env.ANT_VERSION}}-bin.tar.gz
+      #     tar -xf apache-ant-${{env.ANT_VERSION}}-bin.tar
+      #     rm apache-ant-${{env.ANT_VERSION}}-bin.tar
+      #     mv apache-ant-${{env.ANT_VERSION}} ant-${{env.ANT_VERSION}}
+      #     echo "$(pwd)/ant-${{env.ANT_VERSION}}/bin" >> $GITHUB_PATH
           
-          python -m pip install --user --upgrade pip build wheel setuptools
+      #     python -m pip install --user --upgrade pip build wheel setuptools
 
-      - name: Install JCC
-        working-directory: ./pylucene-${{env.LUCENE_VERSION}}/jcc
-        env:
-          JCC_JDK: ${{ env.JAVA_HOME }}
-          JCC_ARGSEP: ";"
-          JCC_LFLAGS: "-L${{ env.JAVA_HOME }}/lib;-ljava;-L${{ env.JAVA_HOME }}/lib/server;-ljvm;-Wl,-rpath=${{ env.JAVA_HOME }}/lib:${{ env.JAVA_HOME }}/lib/server"
-        run: |
-          python setup.py build
-          python setup.py install
+      # - name: Install JCC
+      #   working-directory: ./pylucene-${{env.LUCENE_VERSION}}/jcc
+      #   env:
+      #     JCC_JDK: ${{ env.JAVA_HOME }}
+      #     JCC_ARGSEP: ";"
+      #     JCC_LFLAGS: "-L${{ env.JAVA_HOME }}/lib;-ljava;-L${{ env.JAVA_HOME }}/lib/server;-ljvm;-Wl,-rpath=${{ env.JAVA_HOME }}/lib:${{ env.JAVA_HOME }}/lib/server"
+      #   run: |
+      #     python setup.py build
+      #     python setup.py install
 
       # - name: Initialize gradle settings
       #   working-directory: ./pylucene-${{env.LUCENE_VERSION}}/lucene-java-${{env.LUCENE_VERSION}}
@@ -82,19 +82,29 @@ jobs:
       #     echo $(which java)
       #     ./gradlew localSettings
 
-      - name: Install PyLucene
-        working-directory: ./pylucene-${{env.LUCENE_VERSION}}
-        env:
-          JAVA17_HOME: ${{ env.JAVA_HOME }}
-          JAVA19_HOME: ""
-          JAVA20_HOME: ""
-          JAVA21_HOME: ""
-          JAVA22_HOME: ""
-          RUNTIME_JAVA_HOME: ${{ env.JAVA_HOME }}        
+      # - name: Install PyLucene
+      #   working-directory: ./pylucene-${{env.LUCENE_VERSION}}
+      #   env:
+      #     JAVA17_HOME: ${{ env.JAVA_HOME }}
+      #     JAVA19_HOME: ""
+      #     JAVA20_HOME: ""
+      #     JAVA21_HOME: ""
+      #     JAVA22_HOME: ""
+      #     RUNTIME_JAVA_HOME: ${{ env.JAVA_HOME }}        
+      #   run: |
+      #     echo $JAVA_HOME
+      #     echo $(which java)
+      #     ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --wheel" NUM_FILES=10 make
+
+      - name: Download pylucene
+        run: curl https://downloads.apache.org/lucene/pylucene/pylucene-10.0.0-src.tar.gz | tar -xz --strip-components=1
+
+      - name: Install JCC
         run: |
-          echo $JAVA_HOME
-          echo $(which java)
-          ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --wheel" NUM_FILES=10 make
+          cd jcc \
+            && NO_SHARED=1 JCC_JDK=/usr/lib/jvm/temurin python -m build -nw \
+            && pip install dist/*.whl
+          make all install JCC='python -m jcc' PYTHON=python NUM_FILES=16 MODERN_PACKAGING=true
 
       - name: Upload wheel
         run: |
