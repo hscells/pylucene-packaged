@@ -29,7 +29,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - uses: actions/setup-java@v4
         with:
-          java-version: '17.0.15'
+          java-version: '17'
           distribution: 'oracle'
 
       - name: Validate java config
