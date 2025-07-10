@@ -61,6 +61,13 @@ jobs:
 
       - name: Initialize gradle settings
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}/lucene-java-${{env.LUCENE_VERSION}}
+        env:
+          JAVA17_HOME: $JAVA_HOME 
+          JAVA19_HOME: ""
+          JAVA20_HOME: ""
+          JAVA21_HOME: ""
+          JAVA22_HOME: ""
+          RUNTIME_JAVA_HOME: $JAVA_HOME 
         run: |
           export JAVA17_HOME=$JAVA_HOME 
           export JAVA19_HOME= 
