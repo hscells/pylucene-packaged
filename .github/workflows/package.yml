@@ -62,13 +62,10 @@ jobs:
           make all install JCC='python -m jcc' PYTHON=python NUM_FILES=16 MODERN_PACKAGING=true
 
       - name: Upload wheel
-        run: |
-          # mkdir -p dist
-          # mv pylucene-${{env.LUCENE_VERSION}}/dist/*.whl dist/
-          
+        run: |       
           git config --global user.email "harryscells@gmail.com"
           git config --global user.name "Harry Scells"
           git add -f dist/*.whl
           git commit -m ":robot: Update ${{matrix.os}} wheel for pylucene ${{env.LUCENE_VERSION}}"
-          git pull --rebase
+          git pull --rebase --autostash
           git push
