@@ -38,9 +38,9 @@ jobs:
       #     echo $JAVA_HOME    
       #     update-alternatives --display java
 
-      # - uses: actions/setup-python@v2
-      #   with:
-      #     python-version: ${{ matrix.python-version }}
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
           
       # - name: Download dependencies
       #   run: |
@@ -101,6 +101,7 @@ jobs:
 
       - name: Install JCC
         run: |
+          pip install build setuptools
           cd jcc \
             && NO_SHARED=1 JCC_JDK=/usr/lib/jvm/temurin python -m build -nw \
             && pip install dist/*.whl
