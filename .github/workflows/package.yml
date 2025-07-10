@@ -97,9 +97,10 @@ jobs:
       #     ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --wheel" NUM_FILES=10 make
 
       - name: Download pylucene
-        run: curl https://downloads.apache.org/lucene/pylucene/pylucene-10.0.0-src.tar.gz | tar -xz --strip-components=1
-
+        run: curl https://downloads.apache.org/lucene/pylucene/pylucene-10.0.0-src.tar.gz | tar -xz
+        
       - name: Install JCC
+        working-directory: ./pylucene-${{env.LUCENE_VERSION}}
         env:
           JCC_JDK: ${{ env.JAVA_HOME }}
           JCC_ARGSEP: ";"
