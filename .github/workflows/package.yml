@@ -68,19 +68,19 @@ jobs:
           python setup.py build
           python setup.py install
 
-      - name: Initialize gradle settings
-        working-directory: ./pylucene-${{env.LUCENE_VERSION}}/lucene-java-${{env.LUCENE_VERSION}}
-        env:
-          JAVA17_HOME: ${{ env.JAVA_HOME }}
-          JAVA19_HOME: ""
-          JAVA20_HOME: ""
-          JAVA21_HOME: ""
-          JAVA22_HOME: ""
-          RUNTIME_JAVA_HOME: ${{ env.JAVA_HOME }}
-        run: |
-          echo $JAVA_HOME
-          echo $(which java)
-          ./gradlew localSettings
+      # - name: Initialize gradle settings
+      #   working-directory: ./pylucene-${{env.LUCENE_VERSION}}/lucene-java-${{env.LUCENE_VERSION}}
+      #   env:
+      #     JAVA17_HOME: ${{ env.JAVA_HOME }}
+      #     JAVA19_HOME: ""
+      #     JAVA20_HOME: ""
+      #     JAVA21_HOME: ""
+      #     JAVA22_HOME: ""
+      #     RUNTIME_JAVA_HOME: ${{ env.JAVA_HOME }}
+      #   run: |
+      #     echo $JAVA_HOME
+      #     echo $(which java)
+      #     ./gradlew localSettings
 
       - name: Install PyLucene
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}
