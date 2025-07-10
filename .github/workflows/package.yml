@@ -35,7 +35,7 @@ jobs:
       - name: Validate java config
         run: |
           java --version
-          echo $ENV:JAVA_HOME    
+          echo $JAVA_HOME    
           
       - name: Download dependencies
         run: |
@@ -67,12 +67,12 @@ jobs:
       - name: Install PyLucene
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}
         run: |
-          JAVA17_HOME=$ENV:JAVA_HOME \
+          JAVA17_HOME=$JAVA_HOME \
           JAVA19_HOME= \
           JAVA20_HOME= \
           JAVA21_HOME= \
           JAVA22_HOME= \
-          RUNTIME_JAVA_HOME=$ENV:JAVA_HOME \
+          RUNTIME_JAVA_HOME=$JAVA_HOME \
           ANT=$(which ant) \
           PYTHON=$(which python) \
           JCC="python -m jcc --wheel" \
