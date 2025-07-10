@@ -68,7 +68,15 @@ jobs:
           JAVA21_HOME: ""
           JAVA22_HOME: ""
           RUNTIME_JAVA_HOME: ${{ env.JAVA_HOME }}
-        run: ./gradlew localSettings
+        run: |
+          echo $JAVA_HOME
+          echo $JAVA19_HOME
+          echo $JAVA20_HOME
+          echo $JAVA20_HOME
+          echo $JAVA21_HOME
+          echo $JAVA22_HOME
+          echo $RUNTIME_JAVA_HOME
+          ./gradlew localSettings
 
       - name: Install PyLucene
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}
