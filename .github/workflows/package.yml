@@ -69,7 +69,10 @@ jobs:
           JAVA21_HOME: ""
           JAVA22_HOME: ""
           RUNTIME_JAVA_HOME: ${{ env.JAVA_HOME }}
-        run: JAVA_HOME=$JAVA_HOME ./gradlew localSettings
+        run: |
+          echo $JAVA_HOME
+          echo $(which java)
+          ./gradlew localSettings
 
       - name: Install PyLucene
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}
@@ -80,7 +83,10 @@ jobs:
           JAVA21_HOME: ""
           JAVA22_HOME: ""
           RUNTIME_JAVA_HOME: ${{ env.JAVA_HOME }}        
-        run: JAVA_HOME=$JAVA_HOME ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --wheel" NUM_FILES=10 make
+        run: |
+          echo $JAVA_HOME
+          echo $(which java)
+          ANT=$(which ant) PYTHON=$(which python) JCC="python -m jcc --wheel" NUM_FILES=10 make
 
       - name: Upload wheel
         run: |
