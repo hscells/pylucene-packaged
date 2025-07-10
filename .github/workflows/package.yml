@@ -62,6 +62,8 @@ jobs:
         working-directory: ./pylucene-${{env.LUCENE_VERSION}}/jcc
         env:
           JCC_JDK: ${{ env.JAVA_HOME }}
+          JCC_ARGSEP: ";"
+          JCC_LFLAGS: "-L${{ env.JAVA_HOME }}/lib;-ljava;-L${{ env.JAVA_HOME }}/lib/server;-ljvm;-Wl,-rpath=${{ env.JAVA_HOME }}/lib:${{ env.JAVA_HOME }}/lib/server"
         run: |
           python setup.py build
           python setup.py install
