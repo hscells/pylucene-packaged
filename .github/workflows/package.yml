@@ -99,10 +99,8 @@ jobs:
       - name: Download pylucene
         run: |
           curl https://downloads.apache.org/lucene/pylucene/pylucene-10.0.0-src.tar.gz | tar -xz --strip-components=1
-          ls -alh
         
       - name: Install JCC
-        working-directory: pylucene
         env:
           JCC_JDK: ${{ env.JAVA_HOME }}
           JCC_ARGSEP: ";"
@@ -111,7 +109,8 @@ jobs:
           pip install build setuptools
           cd jcc \
             && NO_SHARED=1 python -m build -nw \
-            && pip install dist/*.whl
+            && pip install dist/*.whl \
+            && cd ../
           make all install JCC='python -m jcc' PYTHON=python NUM_FILES=16 MODERN_PACKAGING=true
 
       - name: Upload wheel
