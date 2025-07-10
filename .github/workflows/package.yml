@@ -36,7 +36,7 @@ jobs:
           curl https://downloads.apache.org/lucene/pylucene/pylucene-10.0.0-src.tar.gz | tar -xz --strip-components=1
 
       - name: Install JCC (ubuntu)
-        if: startsWith(os.matrix, 'ubuntu')
+        if: startsWith(matrix.os, 'ubuntu')
         env:
           JCC_JDK: ${{ env.JAVA_HOME }}
           JCC_ARGSEP: ";"
@@ -50,7 +50,7 @@ jobs:
           make all install JCC='python -m jcc' PYTHON=python NUM_FILES=16 MODERN_PACKAGING=true
 
       - name: Install JCC (macos)
-        if: startsWith(os.matrix, 'macos')
+        if: startsWith(matrix.os, 'macos')
         env:
           JCC_JDK: ${{ env.JAVA_HOME }}
         run: |
