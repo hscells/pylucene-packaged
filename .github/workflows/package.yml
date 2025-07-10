@@ -19,6 +19,7 @@ jobs:
         python-version: [ 3.12 ]
   
     runs-on: ${{ matrix.os }}
+    
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v4
@@ -34,11 +35,7 @@ jobs:
         run: |
           curl https://downloads.apache.org/lucene/pylucene/pylucene-10.0.0-src.tar.gz | tar -xz --strip-components=1
 
-  build_wheel_linux:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install JCC (ubuntu)
+      - name: Install JCC
         env:
           JCC_JDK: ${{ env.JAVA_HOME }}
           JCC_ARGSEP: ";"
@@ -51,33 +48,8 @@ jobs:
             && cd ../
           make all install JCC='python -m jcc' PYTHON=python NUM_FILES=16 MODERN_PACKAGING=true
 
-  build_wheel_macos:
-    needs: setup
-    strategy:
-      matrix:
-        os: [ macos-15 ]
-    runs-on: ${{ matrix.os }}    
-    steps:
-      - name: Install JCC
-        env:
-          JCC_JDK: ${{ env.JAVA_HOME }}
+      - name: Upload wheel
         run: |
-          pip install build setuptools
-          cd jcc \
-            && NO_SHARED=1 python -m build -nw \
-            && pip install dist/*.whl \
-            && cd ../
-          make all install JCC='python -m jcc' PYTHON=python NUM_FILES=16 MODERN_PACKAGING=true
-
-  upload_wheel:
-    needs: [build_wheel_linux, build_wheel_macos]
-    strategy:
-      matrix:
-        os: [ macos-14, ubuntu-latest ]
-  
-    runs-on: ${{ matrix.os }}
-    steps:
-      - run: |
           # mkdir -p dist
           # mv pylucene-${{env.LUCENE_VERSION}}/dist/*.whl dist/
           
